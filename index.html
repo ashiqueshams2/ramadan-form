@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>রমজান তথ্য ফর্ম</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            overflow-y: auto;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: black;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        button:hover {
+            background: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>রমজান তথ্য ফর্ম</h2>
+        <form id="ramadan-form">
+            <label for="menu">১. রমজান মাসজুড়ে কি আপনার রেগুলার মেন্যু থাকবে?</label>
+            <select id="menu" name="menu" required>
+                <option value="হ্যাঁ">হ্যাঁ</option>
+                <option value="না">না</option>
+            </select>
+
+            <label for="open-time">২. রমজান মাসে আপনার রেস্টুরেন্টের খোলা এবং বন্ধ হওয়ার সময়সূচি:</label>
+            <span>খোলার সময়:</span> <input type="time" id="open-time" name="open-time" required>
+            <span>বন্ধের সময়:</span> <input type="time" id="close-time" name="close-time" required>
+
+            <label for="iftar">৩. আপনি কি বিশেষ ইফতার মেনু অফার করবেন?</label>
+            <select id="iftar" name="iftar" required>
+                <option value="হ্যাঁ">হ্যাঁ</option>
+                <option value="না">না</option>
+            </select>
+            <label for="iftar-menu">যদি হ্যাঁ, দয়া করে বিস্তারিত শেয়ার করুন অথবা ফাইল আপলোড করুন:</label>
+            <textarea id="iftar-menu" name="iftar-menu"></textarea>
+            <input type="file" id="iftar-file" name="iftar-file">
+
+            <label for="iftar-time">৪. ইফতার আইটেম কোন সময় পর্যন্ত পাওয়া যাবে?</label>
+            <span>শুরুর সময়:</span> <input type="time" id="iftar-start-time" name="iftar-start-time" required>
+            <span>শেষ সময়:</span> <input type="time" id="iftar-end-time" name="iftar-end-time" required>
+
+            <label for="sehri">৫. আপনার রেস্টুরেন্ট কি সেহরির জন্য খোলা থাকবে?</label>
+            <select id="sehri" name="sehri" required>
+                <option value="হ্যাঁ">হ্যাঁ</option>
+                <option value="না">না</option>
+            </select>
+            <label for="sehri-menu">যদি হ্যাঁ, দয়া করে মেনু এবং সময়সূচি শেয়ার করুন!</label>
+            <textarea id="sehri-menu" name="sehri-menu"></textarea>
+            <input type="file" id="sehri-file" name="sehri-file">
+            <span>শুরুর সময়:</span> <input type="time" id="sehri-start-time" name="sehri-start-time">
+            <span>শেষ সময়:</span> <input type="time" id="sehri-end-time" name="sehri-end-time">
+
+            <button type="submit">জমা দিন</button>
+        </form>
+        <p id="response-message"></p>
+    </div>
+
+    <script>
+        document.getElementById('ramadan-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch("https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('response-message').innerText = "ফর্ম সফলভাবে জমা হয়েছে!";
+                this.reset();
+            })
+            .catch(error => {
+                document.getElementById('response-message').innerText = "জমা ব্যর্থ হয়েছে।";
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
