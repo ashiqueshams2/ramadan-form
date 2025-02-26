@@ -13,7 +13,6 @@
             min-height: 100vh;
             background-color: #f4f4f4;
             padding: 20px;
-            overflow-y: auto;
         }
         .form-container {
             background: white;
@@ -22,7 +21,6 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 500px;
-            overflow-y: auto;
         }
         input, textarea, select {
             width: 100%;
@@ -30,6 +28,7 @@
             margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 16px;
         }
         button {
             background: black;
@@ -39,9 +38,25 @@
             cursor: pointer;
             margin-top: 10px;
             width: 100%;
+            font-size: 18px;
         }
         button:hover {
             background: gray;
+        }
+        .time-input {
+            display: flex;
+            gap: 10px;
+        }
+        .time-input label {
+            flex: 1;
+        }
+        .time-input input {
+            flex: 2;
+        }
+        @media (max-width: 500px) {
+            .form-container {
+                width: 90%;
+            }
         }
     </style>
 </head>
@@ -56,8 +71,12 @@
             </select>
 
             <label for="open-time">২. রমজান মাসে আপনার রেস্টুরেন্টের খোলা এবং বন্ধ হওয়ার সময়সূচি:</label>
-            <span>খোলার সময়:</span> <input type="time" id="open-time" name="open-time" required>
-            <span>বন্ধের সময়:</span> <input type="time" id="close-time" name="close-time" required>
+            <div class="time-input">
+                <label>খোলার সময়:</label>
+                <input type="time" id="open-time" name="open-time" required>
+                <label>বন্ধের সময়:</label>
+                <input type="time" id="close-time" name="close-time" required>
+            </div>
 
             <label for="iftar">৩. আপনি কি বিশেষ ইফতার মেনু অফার করবেন?</label>
             <select id="iftar" name="iftar" required>
@@ -69,8 +88,12 @@
             <input type="file" id="iftar-file" name="iftar-file">
 
             <label for="iftar-time">৪. ইফতার আইটেম কোন সময় পর্যন্ত পাওয়া যাবে?</label>
-            <span>শুরুর সময়:</span> <input type="time" id="iftar-start-time" name="iftar-start-time" required>
-            <span>শেষ সময়:</span> <input type="time" id="iftar-end-time" name="iftar-end-time" required>
+            <div class="time-input">
+                <label>শুরুর সময়:</label>
+                <input type="time" id="iftar-start-time" name="iftar-start-time" required>
+                <label>শেষ সময়:</label>
+                <input type="time" id="iftar-end-time" name="iftar-end-time" required>
+            </div>
 
             <label for="sehri">৫. আপনার রেস্টুরেন্ট কি সেহরির জন্য খোলা থাকবে?</label>
             <select id="sehri" name="sehri" required>
@@ -80,8 +103,12 @@
             <label for="sehri-menu">যদি হ্যাঁ, দয়া করে মেনু এবং সময়সূচি শেয়ার করুন!</label>
             <textarea id="sehri-menu" name="sehri-menu"></textarea>
             <input type="file" id="sehri-file" name="sehri-file">
-            <span>শুরুর সময়:</span> <input type="time" id="sehri-start-time" name="sehri-start-time">
-            <span>শেষ সময়:</span> <input type="time" id="sehri-end-time" name="sehri-end-time">
+            <div class="time-input">
+                <label>শুরুর সময়:</label>
+                <input type="time" id="sehri-start-time" name="sehri-start-time">
+                <label>শেষ সময়:</label>
+                <input type="time" id="sehri-end-time" name="sehri-end-time">
+            </div>
 
             <button type="submit">জমা দিন</button>
         </form>
@@ -91,8 +118,9 @@
     <script>
         document.getElementById('ramadan-form').addEventListener('submit', function(e) {
             e.preventDefault();
+
             const formData = new FormData(this);
-            fetch("https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec", {
+            fetch("YOUR_GOOGLE_SCRIPT_WEB_APP_URL", {
                 method: "POST",
                 body: formData
             })
