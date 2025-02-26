@@ -85,7 +85,7 @@
             </select>
             <label for="iftar-menu">যদি হ্যাঁ, দয়া করে বিস্তারিত শেয়ার করুন অথবা ফাইল আপলোড করুন:</label>
             <textarea id="iftar-menu" name="iftar-menu"></textarea>
-            <input type="file" id="iftar-file" name="iftar-file">
+            <input type="file" id="iftar-file" name="iftar-file" accept=".pdf,.jpg,.png,.doc,.docx">
 
             <label for="iftar-time">৪. ইফতার আইটেম কোন সময় পর্যন্ত পাওয়া যাবে?</label>
             <div class="time-input">
@@ -102,7 +102,7 @@
             </select>
             <label for="sehri-menu">যদি হ্যাঁ, দয়া করে মেনু এবং সময়সূচি শেয়ার করুন!</label>
             <textarea id="sehri-menu" name="sehri-menu"></textarea>
-            <input type="file" id="sehri-file" name="sehri-file">
+            <input type="file" id="sehri-file" name="sehri-file" accept=".pdf,.jpg,.png,.doc,.docx">
             <div class="time-input">
                 <label>শুরুর সময়:</label>
                 <input type="time" id="sehri-start-time" name="sehri-start-time">
@@ -116,26 +116,38 @@
     </div>
 
     <script>
-        document.getElementById('ramadan-form').addEventListener('submit', function(e) {
+        document.getElementById('ramadan-form').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const formData = new FormData(this);
-            fetch("https://script.google.com/macros/s/AKfycbwrKaclNhsaZ_Cz07fJZsUVgRohhuAEi0_x-prQcL8kRr7PKHS2oWZtJzU6L9YNCny_qA/exec", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('response-message').innerText = "ফর্ম সফলভাবে জমা হয়েছে!";
+            const fileInputIftar = document.getElementById('iftar-file');
+            const fileInputSehri = document.getElementById('sehri-file');
+
+            // Attach files if available
+            if (fileInputIftar.files.length > 0) {
+                formData.append("iftar-file", fileInputIftar.files[0]);
+            }
+            if (fileInputSehri.files.length > 0) {
+                formData.append("sehri-file", fileInputSehri.files[0]);
+            }
+
+            try {
+                const response = await fetch("https://script.google.com/macros/s/AKfycbxz2VDF6neGRuLvK4ctjVroYkxk-lgMn6QBceUgBHYOnztwr48Kin2tOmTjKm426MKDvw/exec", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.text();
+                document.getElementById('response-message').innerText = "✅ ফর্ম সফলভাবে জমা হয়েছে!";
                 this.reset();
-            })
-            .catch(error => {
-                document.getElementById('response-message').innerText = "জমা ব্যর্থ হয়েছে।";
-            });
+            } catch (error) {
+                document.getElementById('response-message').innerText = "❌ জমা ব্যর্থ হয়েছে। দয়া করে আবার চেষ্টা করুন।";
+            }
         });
     </script>
 </body>
 </html>
+
 
 
 
