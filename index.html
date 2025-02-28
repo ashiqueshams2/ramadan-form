@@ -106,22 +106,22 @@
         let response = await fetch(`${supabaseUrl}/rest/v1/form_responses`, {
             method: "POST",
             headers: {
-                "apikey": supabaseKey,  // ✅ Explicitly include API key
-                "Authorization": `Bearer ${supabaseKey}`,  // ✅ Also include Authorization
+                "apikey": supabaseKey,  
+                "Authorization": `Bearer ${supabaseKey}`,  
                 "Content-Type": "application/json",
                 "Prefer": "return=representation"
             },
             body: JSON.stringify({
-                name: formObject.name || null,
-                menu: formObject.menu || null,
-                open_time: formObject["open-time"] || null,
-                close_time: formObject["close-time"] || null,
-                iftar: formObject.iftar || null,
+                name: formObject.name || "N/A",
+                menu: formObject.menu || "N/A",
+                open_time: formObject["open-time"] || "00:00:00",
+                close_time: formObject["close-time"] || "00:00:00",
+                iftar: formObject.iftar || "N/A",
                 iftar_menu: formObject["iftar-menu"] || null,
                 iftar_image_url: "",
                 iftar_start_time: formObject["iftar-start-time"] || null,
                 iftar_end_time: formObject["iftar-end-time"] || null,
-                sehri: formObject.sehri || null,
+                sehri: formObject.sehri || "N/A",
                 sehri_menu: formObject["sehri-menu"] || null,
                 sehri_image_url: "",
                 sehri_start_time: formObject["sehri-start-time"] || null,
