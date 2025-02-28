@@ -106,8 +106,8 @@
         let response = await fetch(`${supabaseUrl}/rest/v1/form_responses`, {
             method: "POST",
             headers: {
-                "apikey": supabaseKey,
-                "Authorization": `Bearer ${supabaseKey}`,
+                "apikey": supabaseKey,  // ✅ Explicitly include API key
+                "Authorization": `Bearer ${supabaseKey}`,  // ✅ Also include Authorization
                 "Content-Type": "application/json",
                 "Prefer": "return=representation"
             },
@@ -130,8 +130,8 @@
             })
         });
 
-
         let result = await response.json();
+        console.log("Supabase Response:", result);
 
         if (response.ok) {
             document.getElementById('response-message').innerText = "✅ ফর্ম সফলভাবে জমা হয়েছে!";
@@ -145,6 +145,7 @@
         document.getElementById('response-message').innerText = "❌ ইন্টারনেট সংযোগ সমস্যা!";
     }
 });
+
 
     </script>
 </body>
