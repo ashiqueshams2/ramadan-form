@@ -43,72 +43,45 @@
         button:hover {
             background: gray;
         }
-        .time-input {
-            display: flex;
-            gap: 10px;
-        }
-        .time-input label {
-            flex: 1;
-        }
-        .time-input input {
-            flex: 2;
-        }
-        @media (max-width: 500px) {
-            .form-container {
-                width: 90%;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="form-container">
         <h2>রমজান তথ্য ফর্ম</h2>
         <form id="ramadan-form">
-            <label for="menu">১. রমজান মাসজুড়ে কি আপনার রেগুলার মেন্যু থাকবে?</label>
+            <label for="name">নাম:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="menu">রমজান মাসজুড়ে কি আপনার রেগুলার মেন্যু থাকবে?</label>
             <select id="menu" name="menu" required>
                 <option value="হ্যাঁ">হ্যাঁ</option>
                 <option value="না">না</option>
             </select>
 
-            <label for="open-time">২. রমজান মাসে আপনার রেস্টুরেন্টের খোলা এবং বন্ধ হওয়ার সময়সূচি:</label>
-            <div class="time-input">
-                <label>খোলার সময়:</label>
-                <input type="time" id="open-time" name="open-time" required>
-                <label>বন্ধের সময়:</label>
-                <input type="time" id="close-time" name="close-time" required>
-            </div>
+            <label for="open-time">খোলার সময়:</label>
+            <input type="time" id="open-time" name="open-time" required>
+            <label for="close-time">বন্ধের সময়:</label>
+            <input type="time" id="close-time" name="close-time" required>
 
-            <label for="iftar">৩. আপনি কি বিশেষ ইফতার মেনু অফার করবেন?</label>
+            <label for="iftar">ইফতার মেনু আছে কি?</label>
             <select id="iftar" name="iftar" required>
                 <option value="হ্যাঁ">হ্যাঁ</option>
                 <option value="না">না</option>
             </select>
-            <label for="iftar-menu">যদি হ্যাঁ, দয়া করে বিস্তারিত শেয়ার করুন অথবা ফাইল আপলোড করুন:</label>
+            <label for="iftar-menu">ইফতার মেনু:</label>
             <textarea id="iftar-menu" name="iftar-menu"></textarea>
-            <input type="file" id="iftar-file" name="iftar-file" accept=".pdf,.jpg,.png,.doc,.docx">
+            <label for="iftar-file">ইফতার মেনুর ফাইল আপলোড করুন:</label>
+            <input type="file" id="iftar-file" name="iftar-file">
 
-            <label for="iftar-time">৪. ইফতার আইটেম কোন সময় পর্যন্ত পাওয়া যাবে?</label>
-            <div class="time-input">
-                <label>শুরুর সময়:</label>
-                <input type="time" id="iftar-start-time" name="iftar-start-time" required>
-                <label>শেষ সময়:</label>
-                <input type="time" id="iftar-end-time" name="iftar-end-time" required>
-            </div>
-
-            <label for="sehri">৫. আপনার রেস্টুরেন্ট কি সেহরির জন্য খোলা থাকবে?</label>
+            <label for="sehri">সেহরি মেনু আছে কি?</label>
             <select id="sehri" name="sehri" required>
                 <option value="হ্যাঁ">হ্যাঁ</option>
                 <option value="না">না</option>
             </select>
-            <label for="sehri-menu">যদি হ্যাঁ, দয়া করে মেনু এবং সময়সূচি শেয়ার করুন!</label>
+            <label for="sehri-menu">সেহরি মেনু:</label>
             <textarea id="sehri-menu" name="sehri-menu"></textarea>
-            <input type="file" id="sehri-file" name="sehri-file" accept=".pdf,.jpg,.png,.doc,.docx">
-            <div class="time-input">
-                <label>শুরুর সময়:</label>
-                <input type="time" id="sehri-start-time" name="sehri-start-time">
-                <label>শেষ সময়:</label>
-                <input type="time" id="sehri-end-time" name="sehri-end-time">
-            </div>
+            <label for="sehri-file">সেহরি মেনুর ফাইল আপলোড করুন:</label>
+            <input type="file" id="sehri-file" name="sehri-file">
 
             <button type="submit">জমা দিন</button>
         </form>
@@ -116,37 +89,42 @@
     </div>
 
     <script>
+        const supabaseUrl = "https://qugorsyexbelgeylgbtc.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1Z29yc3lleGJlbGdleWxnYnRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3NDUxMDMsImV4cCI6MjA1NjMyMTEwM30.U2m4GkWhlZT5a1DNj3u6Skdx2K56SwBr641cChXA8dA";
+
         document.getElementById('ramadan-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-
             const formData = new FormData(this);
-            const fileInputIftar = document.getElementById('iftar-file');
-            const fileInputSehri = document.getElementById('sehri-file');
-
-            // Attach files if available
-            if (fileInputIftar.files.length > 0) {
-                formData.append("iftar-file", fileInputIftar.files[0]);
-            }
-            if (fileInputSehri.files.length > 0) {
-                formData.append("sehri-file", fileInputSehri.files[0]);
-            }
-
-            try {
-                const response = await fetch("https://script.google.com/macros/s/AKfycbx6n_Hc54oitGzfAIgYJ2VSu6fDOs7pX-E97vv224KgngirRAk2eEPFR56I1sxIRBCbOw/exec", {
-                    method: "POST",
-                    body: formData
-                });
-
-                const result = await response.text();
+            let response = await fetch(`${supabaseUrl}/rest/v1/form_responses`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${supabaseKey}`,
+                    "Content-Type": "application/json",
+                    "Prefer": "return=representation"
+                },
+                body: JSON.stringify({
+                    name: formData.get("name"),
+                    menu: formData.get("menu"),
+                    open_time: formData.get("open-time"),
+                    close_time: formData.get("close-time"),
+                    iftar: formData.get("iftar"),
+                    iftar_menu: formData.get("iftar-menu"),
+                    sehri: formData.get("sehri"),
+                    sehri_menu: formData.get("sehri-menu"),
+                    submitted_at: new Date().toISOString()
+                })
+            });
+            if (response.ok) {
                 document.getElementById('response-message').innerText = "✅ ফর্ম সফলভাবে জমা হয়েছে!";
                 this.reset();
-            } catch (error) {
-                document.getElementById('response-message').innerText = "❌ জমা ব্যর্থ হয়েছে। দয়া করে আবার চেষ্টা করুন।";
+            } else {
+                document.getElementById('response-message').innerText = "❌ জমা ব্যর্থ হয়েছে। আবার চেষ্টা করুন।";
             }
         });
     </script>
 </body>
 </html>
+
 
 
 
