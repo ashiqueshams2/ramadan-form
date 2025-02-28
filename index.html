@@ -93,28 +93,58 @@
     </div>
 
     <script>
-        const supabaseUrl = "https://qugorsyexbelgeylgbtc.supabase.co";
-        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1Z29yc3lleGJlbGdleWxnYnRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3NDUxMDMsImV4cCI6MjA1NjMyMTEwM30.U2m4GkWhlZT5a1DNj3u6Skdx2K56SwBr641cChXA8dA";
+        document.getElementById('ramadan-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-        document.getElementById('ramadan-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            let response = await fetch(`${supabaseUrl}/rest/v1/form_responses`, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${supabaseKey}`,
-                    "Content-Type": "application/json",
-                    "Prefer": "return=representation"
-                },
-                body: JSON.stringify(Object.fromEntries(formData))
-            });
-            if (response.ok) {
-                document.getElementById('response-message').innerText = "✅ ফর্ম সফলভাবে জমা হয়েছে!";
-                this.reset();
-            } else {
-                document.getElementById('response-message').innerText = "❌ জমা ব্যর্থ হয়েছে। আবার চেষ্টা করুন।";
-            }
+    const supabaseUrl = "https://qugorsyexbelgeylgbtc.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1Z29yc3lleGJlbGdleWxnYnRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3NDUxMDMsImV4cCI6MjA1NjMyMTEwM30.U2m4GkWhlZT5a1DNj3u6Skdx2K56SwBr641cChXA8dA";
+
+    const formData = new FormData(this);
+    const formObject = Object.fromEntries(formData.entries());
+
+    try {
+        let response = await fetch(`${supabaseUrl}/rest/v1/form_responses`, {
+            method: "POST",
+            headers: {
+                "apikey": supabaseKey, // Explicitly add the API key
+                "Authorization": `Bearer ${supabaseKey}`, // Required for authentication
+                "Content-Type": "application/json",
+                "Prefer": "return=representation"
+            },
+            body: JSON.stringify({
+                name: formObject.name,
+                menu: formObject.menu,
+                open_time: formObject["open-time"],
+                close_time: formObject["close-time"],
+                iftar: formObject.iftar,
+                iftar_menu: formObject["iftar-menu"],
+                iftar_image_url: "",
+                iftar_start_time: formObject["iftar-start-time"],
+                iftar_end_time: formObject["iftar-end-time"],
+                sehri: formObject.sehri,
+                sehri_menu: formObject["sehri-menu"],
+                sehri_image_url: "",
+                sehri_start_time: formObject["sehri-start-time"],
+                sehri_end_time: formObject["sehri-end-time"],
+                submitted_at: new Date().toISOString()
+            })
         });
+
+        let result = await response.json();
+
+        if (response.ok) {
+            document.getElementById('response-message').innerText = "✅ ফর্ম সফলভাবে জমা হয়েছে!";
+            this.reset();
+        } else {
+            console.error("Supabase Error:", result);
+            document.getElementById('response-message').innerText = "❌ সার্ভার ত্রুটি, পরে আবার চেষ্টা করুন।";
+        }
+    } catch (error) {
+        console.error("Network Error:", error);
+        document.getElementById('response-message').innerText = "❌ ইন্টারনেট সংযোগ সমস্যা!";
+    }
+});
+
     </script>
 </body>
 </html>
