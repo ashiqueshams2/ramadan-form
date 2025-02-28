@@ -102,6 +102,32 @@
     const formData = new FormData(this);
     const formObject = Object.fromEntries(formData.entries());
 
+    // Function to upload images to Supabase Storage
+    async function uploadImage(file, folder) {
+        if (!file) return null; // No file uploaded
+        let filePath = `${folder}/${Date.now()}-${file.name}`;
+        
+        let { data, error } = await fetch(`${supabaseUrl}/storage/v1/object/form_files/${filePath}`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${supabaseKey}`,
+                "Content-Type": file.type
+            },
+            body: file
+        }).then(res => res.json());
+
+        if (error) {
+            console.error("Image Upload Error:", error);
+            return null;
+        }
+
+        return `${supabaseUrl}/storage/v1/object/public/form_files/${filePath}`;
+    }
+
+    // Upload images and get URLs
+    let iftarImage = await uploadImage(document.getElementById("iftar-file").files[0], "iftar");
+    let sehriImage = await uploadImage(document.getElementById("sehri-file").files[0], "sehri");
+
     try {
         let response = await fetch(`${supabaseUrl}/rest/v1/form_responses`, {
             method: "POST",
@@ -118,12 +144,12 @@
                 close_time: formObject["close-time"] || "00:00:00",
                 iftar: formObject.iftar || "N/A",
                 iftar_menu: formObject["iftar-menu"] || null,
-                iftar_image_url: "",
+                iftar_image_url: iftarImage, // ✅ Store uploaded image URL
                 iftar_start_time: formObject["iftar-start-time"] || null,
                 iftar_end_time: formObject["iftar-end-time"] || null,
                 sehri: formObject.sehri || "N/A",
                 sehri_menu: formObject["sehri-menu"] || null,
-                sehri_image_url: "",
+                sehri_image_url: sehriImage, // ✅ Store uploaded image URL
                 sehri_start_time: formObject["sehri-start-time"] || null,
                 sehri_end_time: formObject["sehri-end-time"] || null,
                 submitted_at: new Date().toISOString()
