@@ -82,6 +82,10 @@
             <textarea id="sehri-menu" name="sehri-menu"></textarea>
             <label for="sehri-file">সেহরি মেনুর ফাইল আপলোড করুন:</label>
             <input type="file" id="sehri-file" name="sehri-file">
+            <label for="sehri-start-time">সেহরির শুরুর সময়:</label>
+            <input type="time" id="sehri-start-time" name="sehri-start-time">
+            <label for="sehri-end-time">সেহরির শেষ সময়:</label>
+            <input type="time" id="sehri-end-time" name="sehri-end-time">
 
             <button type="submit">জমা দিন</button>
         </form>
@@ -102,17 +106,7 @@
                     "Content-Type": "application/json",
                     "Prefer": "return=representation"
                 },
-                body: JSON.stringify({
-                    name: formData.get("name"),
-                    menu: formData.get("menu"),
-                    open_time: formData.get("open-time"),
-                    close_time: formData.get("close-time"),
-                    iftar: formData.get("iftar"),
-                    iftar_menu: formData.get("iftar-menu"),
-                    sehri: formData.get("sehri"),
-                    sehri_menu: formData.get("sehri-menu"),
-                    submitted_at: new Date().toISOString()
-                })
+                body: JSON.stringify(Object.fromEntries(formData))
             });
             if (response.ok) {
                 document.getElementById('response-message').innerText = "✅ ফর্ম সফলভাবে জমা হয়েছে!";
