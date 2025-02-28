@@ -106,29 +106,30 @@
         let response = await fetch(`${supabaseUrl}/rest/v1/form_responses`, {
             method: "POST",
             headers: {
-                "apikey": supabaseKey, // Explicitly add the API key
-                "Authorization": `Bearer ${supabaseKey}`, // Required for authentication
+                "apikey": supabaseKey,
+                "Authorization": `Bearer ${supabaseKey}`,
                 "Content-Type": "application/json",
                 "Prefer": "return=representation"
             },
             body: JSON.stringify({
-                name: formObject.name,
-                menu: formObject.menu,
-                open_time: formObject["open-time"],
-                close_time: formObject["close-time"],
-                iftar: formObject.iftar,
-                iftar_menu: formObject["iftar-menu"],
+                name: formObject.name || null,
+                menu: formObject.menu || null,
+                open_time: formObject["open-time"] || null,
+                close_time: formObject["close-time"] || null,
+                iftar: formObject.iftar || null,
+                iftar_menu: formObject["iftar-menu"] || null,
                 iftar_image_url: "",
-                iftar_start_time: formObject["iftar-start-time"],
-                iftar_end_time: formObject["iftar-end-time"],
-                sehri: formObject.sehri,
-                sehri_menu: formObject["sehri-menu"],
+                iftar_start_time: formObject["iftar-start-time"] || null,
+                iftar_end_time: formObject["iftar-end-time"] || null,
+                sehri: formObject.sehri || null,
+                sehri_menu: formObject["sehri-menu"] || null,
                 sehri_image_url: "",
-                sehri_start_time: formObject["sehri-start-time"],
-                sehri_end_time: formObject["sehri-end-time"],
+                sehri_start_time: formObject["sehri-start-time"] || null,
+                sehri_end_time: formObject["sehri-end-time"] || null,
                 submitted_at: new Date().toISOString()
             })
         });
+
 
         let result = await response.json();
 
