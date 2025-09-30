@@ -1,0 +1,29 @@
+{
+  "name": "ramadan-form",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@genkit-ai/ai": "^0.4.0",
+    "@genkit-ai/core": "^0.4.0",
+    "@genkit-ai/googleai": "^0.4.0",
+    "next": "^14.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-markdown": "^9.0.0",
+    "recharts": "^2.8.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.4.0"
+  }
+}
