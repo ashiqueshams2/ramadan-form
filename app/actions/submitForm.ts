@@ -108,11 +108,9 @@ async function uploadIfPresent(
     throw uploadError;
   }
 
-  const {
-    data: { publicUrl }
-  } = supabase.storage.from('form_files').getPublicUrl(path);
-
-  return publicUrl;
+  // Keep the bucket private and persist the durable object path. Trusted
+  // server-side readers can create a short-lived signed URL when needed.
+  return path;
 }
 
 export { initialState };
