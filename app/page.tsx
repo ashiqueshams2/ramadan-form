@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="form-container">
       <h2>রমজান তথ্য ফর্ম</h2>
-      <form action={formAction}>
+      <form action={formAction} encType="multipart/form-data">
         <label htmlFor="name">নাম:</label>
         <input id="name" name="name" type="text" required />
 
