@@ -28,5 +28,5 @@ The form submits through a Next.js server action that stores data in Supabase an
 
 * Supabase keys are loaded exclusively from environment variables on the server (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`).
 * Server actions handle all database and file operations, keeping the client credential-free.
-* Uploaded files are stored via the Supabase Storage helpers and their public URLs are returned to the client as part of the response.
-* See `supabase/policies.sql` for recommended Row Level Security policies to ensure only authenticated traffic can interact with the `form_responses` table and `form_files` bucket.
+* Uploaded files are kept in a private Supabase Storage bucket. The database stores durable object paths; trusted server-side readers should create short-lived signed URLs when files need to be downloaded.
+* See `supabase/policies.sql` for recommended Row Level Security setup. The server action uses the service role for inserts and uploads, while direct public writes remain blocked.
